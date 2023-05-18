@@ -4,14 +4,19 @@
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.vue",
+    "src/renderer/src/**/*.ts",
     "src/preload/*.d.ts"
   ],
   "compilerOptions": {
     "composite": true,
+    "typeRoots": ["./node_modules/@types", "types"],
     "baseUrl": ".",
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"
+      ],
+      "@core/*": [
+        "src/renderer/src/app/core/*"
       ],
       "@util/*": [
         "src/renderer/src/util/*"

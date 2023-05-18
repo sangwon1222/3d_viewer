@@ -24,11 +24,12 @@
     "@electron-toolkit/utils": "^1.0.2",
     "@electron/remote": "^2.0.9",
     "@types/lodash-es": "^4.17.7",
+    "@types/three": "^0.152.0",
     "electron-updater": "^5.3.0",
     "lodash-es": "^4.17.21",
+    "three": "^0.152.2",
     "ts-node": "^10.9.1",
-    "vue-router": "^4.2.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
+    "vue-router": "^4.2.0"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^1.0.1",

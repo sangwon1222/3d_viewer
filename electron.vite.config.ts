@@ -17,7 +17,7 @@ export default defineConfig({
         '@atoms': resolve('src/renderer/src/components/atoms'),
         '@template': resolve('src/renderer/src/components/template'),
         '@store': resolve('src/renderer/src/store'),
-        '@util': resolve('src/renderer/src/util')
+        '@core': resolve('src/renderer/src/app/core')
       }
     },
     plugins: [vue()]
