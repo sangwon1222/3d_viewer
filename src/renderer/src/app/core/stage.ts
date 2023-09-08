@@ -21,8 +21,8 @@ export class Stage extends THREE.Scene {
   }
 
   private mRaycaster = new THREE.Raycaster()
-  private mLoader = new Loader()
-  get loader(): Loader {
+  private mLoader = new FBXLoader()
+  get loader(): FBXLoader {
     return this.mLoader
   }
 
@@ -36,8 +36,8 @@ export class Stage extends THREE.Scene {
     this.createLight()
     this.createGround()
 
-    const fbxLoader = new FBXLoader()
-    fbxLoader.load(
+    this.mLoader = new FBXLoader()
+    this.mLoader.load(
       // '../../light001.FBX',
       '../../chair001.FBX',
       (object) => {
@@ -49,6 +49,7 @@ export class Stage extends THREE.Scene {
         //   }
         // })
         // object.scale.set(0.8, 0.8, 0.8)
+        object.name = 'model'
         this.add(object)
       },
       (xhr) => {

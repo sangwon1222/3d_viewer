@@ -1,47 +1,62 @@
 <script setup lang="ts" scoped>
 import { onMounted, ref } from 'vue'
 import { Application } from '../app/core/app'
+import { reactive } from 'vue'
+import { debounce } from 'lodash-es'
+import { Stage } from '../app/core/stage'
+import { Loader } from '../app/core/loader'
 import { fbx } from '../store/fbx'
-import { reactive, computed } from 'vue'
+import { Object3D } from 'three'
 
 const canvasRef = ref(null)
+const editTollRef = ref(null)
+
 let app = null
 const state = reactive({
-  isLoading: computed(() => (fbx.loading ? 'true' : 'false'))
+  isFold: false
 })
 onMounted(() => {
   app = new Application({ view: canvasRef.value })
+  editTollRef.value.classList.add(state.isFold ? '-top-100' : 'top-0')
 })
 const upload = async (e) => {
-  // const path = e.target.files[0].path
-  // const url = URL.createObjectURL(e.target.files[0])
-  // await app._scene.loader.loadFBX(url)
-  const blob = new Blob([e.target.files[0]])
-  const url = URL.createObjectURL(blob)
-  fbx.loading = true
-  await app._scene.loader.loadFBX(url, e.target.files[0].name)
-  console.log('load end')
-  console.log(fbx)
+  const name = e.target.files[0].name.toLowerCase().split('.')[0]
+  const path = e.target.files[0].path
+  const url = URL.createObjectURL(e.target.files[0])
+  const scene = app._scene as Stage
+  const loader = scene.loader as Loader
+
+  for (let i = 0; i < scene.children.length; i++) {
+    const obj = scene.children[i]
+    if (obj.name === 'model') scene.remove(obj)
+  }
+
+  console.log(loader)
+  await loader.loadFBX(url, name)
+  // scene.add(fbx.load[name])
+  const object = fbx.load[name] as Object3D
+  console.log(object.clone())
+  scene.add(object)
 }
-const test = () => {
-  console.log(fbx.load)
-  console.log(fbx.load['light001.FBX'])
-  console.log(app._scene)
-  console.log(app._scene.add)
-  app._scene.add(fbx.load['chair001.FBX'])
-}
+
+const fold = debounce(() => (state.isFold = !state.isFold), 250, { leading: true, trailing: false })
 </script>
 
 <template>
-  <canvas ref="canvasRef" />
-  <div class="text-white bg-black fixed top-10">
-    {{ `${state.isLoading}` }}
+  <button
+    class="fixed top-10 right-10 z-90 text-30 duration-500"
+    :class="state.isFold ? 'rotate-[180deg]' : 'rotate-[0]'"
+    @click="fold"
+  >
+    <p>👆</p>
+  </button>
+  <div
+    ref="editTollRef"
+    class="fixed overflow-hidden duration-500 text-white bg-main w-full p-10"
+    :class="state.isFold ? '-top-100' : 'top-0'"
+  >
+    <input type="file" accept="image/fbx" @change="upload" />
   </div>
-  <button class="text-white bg-black fixed top-20" @click="test">TEST</button>
-  <input
-    type="file"
-    class="fixed top-0 left-0 border w-220 h-10 bg-white text-black opacity-80 rounded overflow-hidden"
-    accept="image/fbx"
-    @change="upload"
-  />
+
+  <canvas ref="canvasRef" class="h-full w-full" />
 </template>

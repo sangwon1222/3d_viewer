@@ -8,7 +8,7 @@ const createWindow = async () => {
     width: 1280,
     height: 800,
     show: false,
-    title: '검수 발행기',
+    title: '3D 모델 뷰어',
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

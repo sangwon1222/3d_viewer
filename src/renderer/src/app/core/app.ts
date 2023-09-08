@@ -72,7 +72,7 @@ export class Application {
     window.addEventListener(
       'resize',
       () => {
-        const camera = this.scene.camera.getCamera() as THREE.Camera
+        const camera = this.scene.camera.getCamera() as THREE.PerspectiveCamera
         camera.aspect = window.innerWidth / window.innerHeight
         camera.updateProjectionMatrix()
         this.renderer.setSize(window.innerWidth, window.innerHeight)
